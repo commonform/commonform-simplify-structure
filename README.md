@@ -1,23 +1,12 @@
-/* Copyright 2016 Kyle E. Mitchell
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you
- * may not use this file except in compliance with the License. You may
- * obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- * implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
-
+```javascript
+var simplify = require('commonform-simplify-structure')
 var assert = require('assert')
-var simplify = require('./')
+```
 
-// This form has two series of contiguous child forms in its root
-// content array.
+Given a form with two series of contiguous child forms in its root
+content array
+
+```javascript
 var first = {
   content: [
     'in the states:',
@@ -28,11 +17,14 @@ var first = {
     {form: {content: ['Puerto Rico']}}
   ]
 }
+```
 
+`simplify` splits the root content array into multiple children,
+with one series of contiguous child forms in each
+
+```javascript
 simplify(first)
 
-// `simplify` splits the root content array into multiple children, with
-// one series of contiguous child forms in each.
 assert.deepEqual(first, {
   content: [
     {
@@ -55,8 +47,11 @@ assert.deepEqual(first, {
     }
   ]
 })
+```
 
-// This form has two series of contiguous child forms in a child form.
+A form with multiple series of contiguous child forms in a child form
+
+```javascript
 var second = {
   content: [
     {
@@ -74,10 +69,14 @@ var second = {
     }
   ]
 }
+```
 
+gets changed in the same way, preserving an child-form headings so
+references remain correct
+
+```javascript
 simplify(second)
 
-// `simplify` splits the content array of the child form.
 assert.deepEqual(second, {
   content: [
     {
@@ -107,7 +106,11 @@ assert.deepEqual(second, {
     }
   ]
 })
+```
 
+Each new paragraph in a form ends up in a separate child form
+
+```javascript
 var third = {
   content: [
     {
@@ -170,7 +173,11 @@ assert.deepEqual(third, {
     }
   ]
 })
+```
 
+Definitions, uses, references, and blanks are preserved:
+
+```javascript
 var fourth = {
   content: [
     {
@@ -233,3 +240,4 @@ assert.deepEqual(fourth, {
     }
   ]
 })
+```
