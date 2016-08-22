@@ -170,3 +170,66 @@ assert.deepEqual(third, {
     }
   ]
 })
+
+var fourth = {
+  content: [
+    {
+      heading: 'Jurisdiction',
+      form: {
+        content: [
+          // Paragraph
+          'in the ', {use: 'States'}, ':',
+          // Series
+          {form: {content: ['Virgina']}},
+          {form: {content: ['New York']}},
+          // Paragraph
+          'and the ', {use: 'Territories'}, ':',
+          // Series
+          {form: {content: ['Guam']}},
+          {form: {content: ['Puerto Rico']}},
+          // Paragraph
+          'and Washington, D.C.'
+        ]
+      }
+    }
+  ]
+}
+
+simplify(fourth)
+
+assert.deepEqual(fourth, {
+  content: [
+    {
+      heading: 'Jurisdiction',
+      form: {
+        content: [
+          {
+            form: {
+              content: [
+                'in the ', {use: 'States'}, ':',
+                {form: {content: ['Virgina']}},
+                {form: {content: ['New York']}}
+              ]
+            }
+          },
+          {
+            form: {
+              content: [
+                'and the ', {use: 'Territories'}, ':',
+                {form: {content: ['Guam']}},
+                {form: {content: ['Puerto Rico']}}
+              ]
+            }
+          },
+          {
+            form: {
+              content: [
+                'and Washington, D.C.'
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+})
