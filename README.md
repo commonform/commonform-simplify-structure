@@ -1,10 +1,19 @@
-```javascript
-var simplify = require('commonform-simplify-structure')
-var assert = require('assert')
-```
+Common Forms are hierarchical in structure, like XML and JSON
+documents more generally.  Unlike some other document formats, Common
+Form allow arbitrary nesting of block elements (forms) within other
+block elements.  For example:
 
-Given a form with two series of contiguous child forms in its root
-content array
+> in the states:
+>
+> 1.  Virginia
+> 2.  New York
+>
+> and the territories:
+>
+> 1.  Guam
+> 2.  Puerto Rico
+
+is represented:
 
 ```javascript
 var first = {
@@ -23,6 +32,9 @@ var first = {
 with one series of contiguous child forms in each
 
 ```javascript
+var simplify = require('commonform-simplify-structure')
+var assert = require('assert')
+
 simplify(first)
 
 assert.deepEqual(first, {
@@ -241,3 +253,7 @@ assert.deepEqual(fourth, {
   ]
 })
 ```
+
+See also [this blob post by the author][reproduction].
+
+[reproduction]: https://writing.kemitchell.com/2015/08/21/Reproduction-of-Hierarchy.html
