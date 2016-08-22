@@ -1,0 +1,14 @@
+{
+  "name": "commonform-simplify-structure",
+  "version": "0.0.0",
+  "description": "restructure forms so each form contains at most one series",
+  "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
+  "repository": "commonform/commonform-simplify-structure",
+  "files": [
+    "index.js"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "node test.js"
+  }
+}
