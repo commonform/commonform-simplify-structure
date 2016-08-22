@@ -14,21 +14,40 @@
  */
 
 module.exports = function simplify (form) {
-  var newContent
-  var lastNewChild
+  // Count series of contiguous child forms in the form's content.  If
+  // there is more than one, create a replacement content array that
+  // splits "paragraphs" of contiguous non-child elements and "series"
+  // of contiguous child forms.
   var seriesSeen = 0
+
+  // New content array.
+  var newContent
+  // The last new child form elements in `newContent`.
+  var lastNewChild
+
+  // Iterate content elements.
   var content = form.content
-  var length = content.length
   var lastWasChild = false
   var lastChildIndex = null
+  var length = content.length
   for (var index = 0; index < length; index++) {
     var element = content[index]
+
     if (isChild(element)) {
       if (!lastWasChild) {
         seriesSeen++
       }
       if (seriesSeen > 1) {
+        // Just discovered that there is more than one series in this
+        // form's content array.  Set `newContent` to an array.
         if (!lastWasChild && seriesSeen === 2) {
+          // Thew new array's initial content is:
+          //
+          // 1.  A new child form object with content elements from the
+          //     start through the last child form in the first series.
+          //
+          // 2.  Another new child form object with content from after
+          //     the last series through the current (child) element.
           var lastInlineIndex = lastChildIndex + 1
           newContent = [
             {form: {content: content.slice(0, lastInlineIndex)}},
@@ -44,6 +63,8 @@ module.exports = function simplify (form) {
       simplify(element.form)
     } else {
       if (newContent) {
+        // If this is the start of a new "paragraph", push a new child
+        // form object to the new content array to hold it.
         if (lastWasChild) {
           lastNewChild = {form: {content: [element]}}
           newContent.push(lastNewChild)
@@ -54,6 +75,7 @@ module.exports = function simplify (form) {
       lastWasChild = false
     }
   }
+  // If we created a replacement content array, sub it it.
   if (newContent) {
     form.content = newContent
   }
